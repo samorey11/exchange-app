@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import XChange from './XChange';
+import XRates from './XRates';
+
 import './App.css';
 
-function App() {
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <Link className="navbar-brand" to="/">X-Change</Link>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link className="nav-link" to="./XChange">X-Change</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="./XRates">X-Rates</Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <Switch>
+        <Route path="/" exact component={XChange} />
+        <Route path="/XRates" component={XRates} />
+      </Switch>
+    </Router>
+  )
 }
 
 export default App;
