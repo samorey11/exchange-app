@@ -1,55 +1,86 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
+import Table from './Table';
 
-const Currency = (props) => {
-  const {
-    amount,
-    base,
-    date,
-    rates,
-  } = props.currency
 
-  return (
-    <div className="row">
-      <div className="col-6 mb-3">
-        <span>Base Currency:</span><select className="base">
-          <option value="AUD" selected>AUD</option>
-          <option value="BGN">BGN</option>
-        </select>
-        <span>Amount:</span><input type="number" placeholder="amount in base currency"></input>
-      </div>
-      <div className="col-6 mb-3">
-        <span>Convert to:</span><select className="convert">
-          <option value="BGN" selected>BGN</option>
-          <option value="BRL">BRL</option>
-        </select>
-        <span>Total</span>
-      </div>
-    </div>
-  )
-}
 
-class CurrencyConverter extends React.Component {
+class CurrencyRates extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      base: null,
-      amount: null,
+      amount: '',
+      base: '',
     };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    
     
   }
 
 
-  render () {
+  handleChange(event) {
+    const { name, value } = event.target;
     
+    
+    this.setState({
+      [name]: value
+    }); 
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const { base, amount, convert } = this.state;
+    console.log(`base: ${base}\namount: ${amount}`);
+    
+    const host = 'api.frankfurter.app';
+    fetch(`https://${host}/latest?from=${base}`)
+    .then(checkStatus)
+    .then(json)
+    .then((data) => {
+      console.log('json data', data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  getHeadings = () => {
+    fetch(`https://altexchangerateapi.herokuapp.com/currencies`)
+    .then(checkStatus)
+    .then(json)
+    .then((data) => {
+      console.log('json data', data);
+    })
+
+    return Object.keys(response[0]);
+  }
+
+  render () {
+    const { amount, base } = this.state;
 
     return (
       <div className="container">
         <div className="row">
-          <div className="col-12">
-            Select Base Currency
+          <form onSubmit={this.handleSubmit}>
+            <div className="col-6">
+              <span>Amount: </span>
+              <input type="amount" name="amount" value={amount} onChange={this.handleChange} className="text-center"/>
+            </div>
+            <div className="col-6">
+              <span>Base: </span>
+              <select name="base" value={base} onChange={this.handleChange} className="text-center">
+                <option value="">Choose a base currency</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="BGN">BGN - Bulgarian Lev</option>
+              </select>
+            </div>
+            <button type="submit" className="btn btn-primary">Convert</button>
+          </form>
+        </div>
+        <div className="row">
+          <div className="col-12 text-center my-4">
+            <Table theadData={this.getHeadings()} tbodyData={data}/>
           </div>
         </div>
       </div>
@@ -57,4 +88,4 @@ class CurrencyConverter extends React.Component {
   }
 }
 
-export default CurrencyConverter;
+export default CurrencyRates;

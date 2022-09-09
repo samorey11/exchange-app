@@ -1,4 +1,4 @@
-export const currencyList = (response) => {
+export const checkStatus = (response) => {
   if(response.ok) {
     return response;
   }
@@ -6,3 +6,4 @@ export const currencyList = (response) => {
 }
 
 export const json = (response) => response.json()
+
