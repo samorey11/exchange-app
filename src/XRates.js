@@ -90,15 +90,7 @@ class CurrencyConverter extends React.Component {
     return (
       <div className="row">
         <div className="col-6 mb-3 text-center">
-          <span>Base Currency:</span>
           <form onSubmit={this.handleSubmit} className="form-inline">
-            <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
-              {this.state.currencies.map(currency => (
-                <option key={currency.symbol} value={currency.symbol}>
-                {currency.symbol} - {currency.name}
-              </option>
-              ))}
-            </select>
             <label>
               Amount:
               <input type="number" name="amount" value={amount} onChange={this.handleChange} className="form-control" />
@@ -107,7 +99,7 @@ class CurrencyConverter extends React.Component {
           </form>
         </div>
         <div className="col-6 mb-3 text-center">
-          <span>Convert to: </span>
+          <span>Base Currency: </span>
           <p>
           <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
               {this.state.currencies.map(currency => (
@@ -122,8 +114,13 @@ class CurrencyConverter extends React.Component {
             <span>${amount} * (currencies.rates)</span>
           </p>
         </div>
+        <div className="row">
+          <div className="col-12 mb-3 text-center">
+            <span>Conversion Table</span>
+          </div>
+        </div>
       </div>
-      )
+    )
   }
 }
 
