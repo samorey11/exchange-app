@@ -89,7 +89,7 @@ class CurrencyConverter extends React.Component {
 
     return (
       <div className="row">
-        <div className="col-6 mb-3 text-center">
+        <div className="col-4 my-3 ms-5 text-center" id="coin">
           <span>Base Currency:</span>
           <form onSubmit={this.handleSubmit} className="form-inline">
             <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
@@ -106,7 +106,8 @@ class CurrencyConverter extends React.Component {
             <button type="submit" className="btn btn-primary">Convert</button>
           </form>
         </div>
-        <div className="col-6 mb-3 text-center">
+        <div className="col-3"></div>
+        <div className="col-4 my-3 me-3 text-center" id="coin">
           <span>Convert to: </span>
           <p>
           <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">

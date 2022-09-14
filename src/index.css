@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#coin {
+  border-radius: 50%;
+  border-style: groove;
+  border-color: grey;
+  
+  background-color: grey;
+}
+
+
+
