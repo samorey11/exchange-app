@@ -26,17 +26,9 @@ class CurrencyConverter extends React.Component {
     .then(checkStatus)
     .then(json)
     .then((data) => {
-      if(data.Response === 'False') {
-        throw new Error(data.Error);
-      }
-
-      if(data.Response === 'True') {
-        let currencyList = Object.keys(data.code);
-        console.log(currencyList);
-        this.setState({ 
-          currencies: currencyList
-        });
-      }
+      this.setState({
+        currencies: Object.keys(data).map(symbol => ({ symbol, name: data[symbol] }))
+      });
     })
     .catch((error) => {
       this.setState({ error: error.message });
@@ -101,8 +93,11 @@ class CurrencyConverter extends React.Component {
           <span>Base Currency:</span>
           <form onSubmit={this.handleSubmit} className="form-inline">
             <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
-              <option value="AUD">AUD - Australian Dollar</option>
-              <option value="BGN">BGN - Bulgarian Lev</option>
+              {this.state.currencies.map(currency => (
+                <option key={currency.symbol} value={currency.symbol}>
+                {currency.symbol} - {currency.name}
+              </option>
+              ))}
             </select>
             <label>
               Amount:
@@ -114,10 +109,12 @@ class CurrencyConverter extends React.Component {
         <div className="col-6 mb-3 text-center">
           <span>Convert to: </span>
           <p>
-            <select name="convert" value={convert} onChange={this.handleChange} className="form-control select-menu">
-              <option value="AUD">AUD - Australian Dollar</option>
-              <option value="BGN">BGN - Bulgarian Lev</option>
-            
+          <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
+              {this.state.currencies.map(currency => (
+                <option key={currency.symbol} value={currency.symbol}>
+                {currency.symbol} - {currency.name}
+              </option>
+              ))}
             </select>
           </p>
           <p>
