@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
+import arrow from './arrow.jpg';
 
 
 
@@ -12,13 +13,14 @@ class CurrencyConverter extends React.Component {
       amount: '',
       convert: '',
       currencies: [],
-      result: ''
+      total: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    
-    
+    this.handleBaseChange = this.handleBaseChange.bind(this);
+    this.handleAmountChange = this.handleAmountChange.bind(this);
+    this.handleConvertChange = this.handleConvertChange.bind(this);
+  
   }
 
   componentDidMount() {
@@ -36,19 +38,24 @@ class CurrencyConverter extends React.Component {
     })
   }
 
-  handleChange(event) {
-    const { name, value } = event.target;
-    
-    
-    this.setState({
-      [name]: value
-    }); 
+  handleBaseChange(event) {
+    this.setState({ base: event.target.value }); 
   }
+
+  handleAmountChange(event) {
+    this.setState({ amount: event.target.value });
+  }
+
+  handleConvertChange(event) {
+    this.setState({ convert: event.target.value });
+  }
+
 
   handleSubmit(event) {
     event.preventDefault();
     const { base, amount, convert } = this.state;
-    //base = base.trim();
+    
+
     console.log(`base: ${base}\namount: ${amount}\nconvert: ${convert}`);
     
     const host = 'api.frankfurter.app';
@@ -62,66 +69,83 @@ class CurrencyConverter extends React.Component {
     })
   }
   
-  calculateTotal = () => {
-    const {base, amount, result, convert } = this.state;
-    console.log(`base: ${base}\namount: ${amount}\nconvert: ${convert}`);
+  convertRate = () => {
+    const { base, convert } = this.state;
+
+    const host = 'api.frankfurter.app';
+    fetch(`https://${host}/latest?from=${base}&to=${convert}`)
+    .then(checkStatus)
+    .then(json)
+    .then((data) => {
+      this.setState({
+        convert: parseFloat(data.rates["${convert}"].rate)
+      })
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  conversionTotal = () => {
+    const { convert, amount } = this.state;
     
-    if(amount === isNaN) {
-      return;
-    } else {
-      const host = 'api.frankfurter.app';
-      fetch(`https://${host}/latest?from=${this.state.base}&to=${this.state.convert}`)
-      .then(checkStatus)
-      .then(json)
-      .then((data) => {
-        const result = (data.rates[this.state.convert] * amount).toFixed(2);
-        this.setState({
-          result
-        });
-      });
-    
-    }
-  };
+    const total = (convert * amount).toFixed(2);
+    this.setState({ 
+      total
+    });
+  }  
+
+
 
   render () {
-    const { currencies, base, amount, convert, result } = this.state;
+    const { currencies, base, amount, convert, total } = this.state;
     
 
     return (
       <div className="row">
         <div className="col-4 my-3 ms-5 text-center" id="coin">
-          <span>Base Currency:</span>
-          <form onSubmit={this.handleSubmit} className="form-inline">
-            <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
-              {this.state.currencies.map(currency => (
-                <option key={currency.symbol} value={currency.symbol}>
-                {currency.symbol} - {currency.name}
-              </option>
-              ))}
-            </select>
-            <label>
-              Amount:
-              <input type="number" name="amount" value={amount} onChange={this.handleChange} className="form-control" />
-            </label>
-            <button type="submit" className="btn btn-primary">Convert</button>
+          <div className="row text-center my-3 mx-auto">
+            <span>Base Currency:</span>
+          </div>
+          <form onSubmit={this.handleSubmit}>
+            <div className="text-center mx-auto"style={{width: '50%'}}>
+              <select name="base" value={base} onChange={this.handleBaseChange} className="form-control select-menu text-center">
+                {this.state.currencies.map(currency => (
+                  <option key={currency.symbol} value={currency.symbol}>
+                  {currency.symbol} - {currency.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="my-3 mx-auto text-center">
+              <label>
+                Amount:
+                <input style={{width: '50%'}} type="number" name="amount" value={amount} onChange={this.handleAmountChange} className="my-3 mx-auto form-control" />
+              </label>
+              
+            </div>
+            <button type="submit" className="btn btn-primary btn-lg">Convert</button>
           </form>
         </div>
-        <div className="col-3"></div>
-        <div className="col-4 my-3 me-3 text-center" id="coin">
-          <span>Convert to: </span>
-          <p>
-          <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu">
+        <div className="col-3 my-auto text-center mx-auto">
+          <img src={arrow} />
+        </div>
+        <div className="col-4 my-3 mx-auto text-center" id="coin">
+          <div className="row text-center my-3 mx-auto">
+            <span>Convert to: </span>
+          </div>
+          <div className="text-center mx-auto" style={{width: '50%'}}>
+          <select name="convert" value={convert} onChange={this.handleConvertChange} className="form-control select-menu text-center">
               {this.state.currencies.map(currency => (
                 <option key={currency.symbol} value={currency.symbol}>
                 {currency.symbol} - {currency.name}
               </option>
               ))}
             </select>
-          </p>
-          <p>
+          </div>
+          <div className="my-3 mx-auto text-center">
             <span>Total: </span>
-            <span>${amount} * (currencies.rates)</span>
-          </p>
+          </div>
+          <span>${total}</span>
         </div>
       </div>
       )

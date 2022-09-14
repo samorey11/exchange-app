@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import XChange from './XChange';
 import XRates from './XRates';
+import { json, checkStatus } from './utils';
 
 
 import './App.css';
@@ -11,7 +12,9 @@ const NotFound = () => {
 }
 
 
+
 const App = () => {
+
   return (
     <Router>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">

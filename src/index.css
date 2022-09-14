@@ -14,10 +14,71 @@ code {
 
 #coin {
   border-radius: 50%;
-  border-style: groove;
-  border-color: grey;
+  border-style: solid;
+
   
-  background-color: grey;
+  
+  background-color: lightgray;
+
+  padding-top: 4em;
+  height: 500px;
+  vertical-align: middle;
+  text-align: center;
+  
+  font-size: 2em;
+  color: white;
+}
+
+.navbar-brand {
+  font-size: 3em;
+}
+
+.nav-link {
+  font-size: 2em;
+}
+
+#xrates {
+  border-radius: .5rem;
+  border-style: solid;
+  width: 50%;
+  height: 200px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  
+
+  border-color: green;
+  border-width: 4px;
+  background-color: lightgray;
+
+  color: white;
+  font-size: 1.5em;
+}
+
+#xrates-table {
+  font-size: 3em;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 75%;
+  margin: auto;
+}
+
+th,
+td {
+  border: 1px solid #ffffff;
+  text-align: left;
+  padding: 8px;
+  font-size: 14px;
+}
+
+th {
+  background-color: rgb(117, 201, 250);
+}
+
+td {
+  background-color: rgb(205, 235, 253);
 }
 
 
