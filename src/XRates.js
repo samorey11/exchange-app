@@ -12,6 +12,7 @@ class CurrencyConverter extends React.Component {
       base: '',
       amount: '',
       convert: '',
+      rate: '',
       currenciesList: [],
       result: '',
       conversions: []
@@ -51,12 +52,12 @@ class CurrencyConverter extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { base, amount, convert } = this.state;
+    const { rate, amount, convert } = this.state;
     //base = base.trim();
-    console.log(`base: ${base}\namount: ${amount}\nconvert: ${convert}`);
+    console.log(`base: ${rate}\namount: ${amount}`);
     
     const host = 'api.frankfurter.app';
-    fetch(`https://${host}/latest?from=${base}&to=${convert}`)
+    fetch(`https://${host}/latest?from=${rate}`)
     .then(checkStatus)
     .then(json)
     .then((data) => {
@@ -69,30 +70,10 @@ class CurrencyConverter extends React.Component {
     })
   }
   
-  calculateTotal = () => {
-    const {base, amount, result, convert } = this.state;
-    console.log(`base: ${base}\namount: ${amount}\nconvert: ${convert}`);
-    
-    if(amount === isNaN) {
-      return;
-    } else {
-      const host = 'api.frankfurter.app';
-      fetch(`https://${host}/latest?from=${this.state.base}&to=${this.state.convert}`)
-      .then(checkStatus)
-      .then(json)
-      .then((data) => {
-        const result = (data.rates[this.state.convert] * amount).toFixed(2);
-        this.setState({
-          result
-        });
-      });
-    
-    }
-  };
 
 
   render () {
-    const { currency, base, amount, convert, result, rates, conversions } = this.state;
+    const { currency, base, amount, convert, result, rate, conversions } = this.state;
     
 
     return (
@@ -106,14 +87,14 @@ class CurrencyConverter extends React.Component {
                   <input type="number" name="amount" value={amount} onChange={this.handleChange} className="form-control my-3" />
                 </label>
               </div> 
-              
+              <button type="submit" className="btn btn-primary">Convert</button>
             </form>
-            <button type="submit" className="btn btn-primary">Convert</button>
+            
           </div>
           <div className="col-6 mb-3 my-3 text-center">
             <span>Base Currency: </span>
             <div className="text-center mx-auto my-2"style={{width: '50%'}}>
-            <select name="base" value={base} onChange={this.handleChange} className="form-control select-menu text-center">
+            <select name="rate" value={rate} onChange={this.handleChange} className="form-control select-menu text-center">
                 {this.state.currenciesList.map(currency => (
                   <option key={currency.symbol} value={currency.symbol}>
                   {currency.symbol} - {currency.name}
@@ -138,9 +119,9 @@ class CurrencyConverter extends React.Component {
               <tbody>
                 {conversions.map((currency) => (
                   <tr>
-                  <td>{currency.symbol}</td>
-                  <td>{currency.rate}</td>
-                </tr>
+                    <td>{currency.symbol}</td>
+                    <td>{currency.rate}</td>
+                  </tr>
                 ))}
               </tbody>
             </table>

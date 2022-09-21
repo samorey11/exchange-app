@@ -12,7 +12,24 @@ code {
     monospace;
 }
 
-#coin {
+#coin1 {
+  border-radius: 50%;
+  border-style: solid;
+
+  
+  
+  background-color: lightgray;
+
+  padding-top: 4em;
+  height: 500px;
+  vertical-align: middle;
+  text-align: center;
+  
+  font-size: 2em;
+  color: white;
+}
+
+#coin2 {
   border-radius: 50%;
   border-style: solid;
 

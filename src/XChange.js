@@ -13,7 +13,8 @@ class CurrencyConverter extends React.Component {
       amount: '',
       convert: '',
       currencies: [],
-      total: ''
+      total: '',
+      rate: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,7 +54,7 @@ class CurrencyConverter extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { base, amount, convert } = this.state;
+    const { base, amount, convert, rate } = this.state;
     
 
     console.log(`base: ${base}\namount: ${amount}\nconvert: ${convert}`);
@@ -63,7 +64,14 @@ class CurrencyConverter extends React.Component {
     .then(checkStatus)
     .then(json)
     .then((data) => {
-      console.log('json data', data);
+      console.log(data);
+      this.setState({
+        rate: Object.keys(data.rates).forEach((key) => {
+          parseFloat(data.rates[key].rate);
+        })
+      });
+      const total = parseFloat(rate * amount);
+      console.log(total);
     }).catch((error) => {
       console.log(error);
     })
@@ -92,7 +100,7 @@ class CurrencyConverter extends React.Component {
     this.setState({ 
       total
     });
-  }  
+  }
 
 
 
@@ -102,7 +110,7 @@ class CurrencyConverter extends React.Component {
 
     return (
       <div className="row">
-        <div className="col-4 my-3 ms-5 text-center" id="coin">
+        <div className="col-4 my-3 ms-5 text-center" id="coin1">
           <div className="row text-center my-3 mx-auto">
             <span>Base Currency:</span>
           </div>
@@ -129,7 +137,7 @@ class CurrencyConverter extends React.Component {
         <div className="col-3 my-auto text-center mx-auto">
           <img src={arrow} />
         </div>
-        <div className="col-4 my-3 mx-auto text-center" id="coin">
+        <div className="col-4 my-3 mx-auto text-center" id="coin2">
           <div className="row text-center my-3 mx-auto">
             <span>Convert to: </span>
           </div>
