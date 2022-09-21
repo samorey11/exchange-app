@@ -3,18 +3,16 @@ import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 import arrow from './arrow.jpg';
 
-
-
 class CurrencyConverter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      base: '',
-      amount: '',
-      convert: '',
+      base: 'USD',
+      amount: '1',
+      convert: 'AUD',
       currencies: [],
       total: '',
-      rate: ''
+      rate: '0'
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,6 +30,7 @@ class CurrencyConverter extends React.Component {
       this.setState({
         currencies: Object.keys(data).map(symbol => ({ symbol, name: data[symbol] }))
       });
+      this.handleSubmit();
     })
     .catch((error) => {
       this.setState({ error: error.message });
@@ -53,7 +52,9 @@ class CurrencyConverter extends React.Component {
 
 
   handleSubmit(event) {
-    event.preventDefault();
+    if(event) {
+      event.preventDefault();
+    }
     const { base, amount, convert, rate } = this.state;
     
 
@@ -64,14 +65,9 @@ class CurrencyConverter extends React.Component {
     .then(checkStatus)
     .then(json)
     .then((data) => {
-      console.log(data);
       this.setState({
-        rate: Object.keys(data.rates).forEach((key) => {
-          parseFloat(data.rates[key].rate);
-        })
+        rate: data.rates[convert],
       });
-      const total = parseFloat(rate * amount);
-      console.log(total);
     }).catch((error) => {
       console.log(error);
     })
@@ -95,17 +91,17 @@ class CurrencyConverter extends React.Component {
 
   conversionTotal = () => {
     const { convert, amount } = this.state;
-    
     const total = (convert * amount).toFixed(2);
-    this.setState({ 
+    this.setState({
       total
     });
   }
-
+  
 
 
   render () {
-    const { currencies, base, amount, convert, total } = this.state;
+    const { currencies, base, amount, rate, convert } = this.state;
+    console.log(rate);
     
 
     return (
@@ -153,7 +149,7 @@ class CurrencyConverter extends React.Component {
           <div className="my-3 mx-auto text-center">
             <span>Total: </span>
           </div>
-          <span>${total}</span>
+          <span>${amount * rate}</span>
         </div>
       </div>
       )
