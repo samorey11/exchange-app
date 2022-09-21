@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 import "./index.css";
 
-
-
 class CurrencyConverter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      base: '',
-      amount: '',
+      base: 'USD',
+      amount: '1',
       convert: '',
       rate: '',
       currenciesList: [],
@@ -20,8 +18,6 @@ class CurrencyConverter extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    
-    
   }
 
   componentDidMount() {
@@ -33,6 +29,7 @@ class CurrencyConverter extends React.Component {
       this.setState({
         currenciesList: Object.keys(data).map(symbol => ({ symbol, name: data[symbol] }))
       });
+      this.handleSubmit();
     })
     .catch((error) => {
       this.setState({ error: error.message });
@@ -44,26 +41,27 @@ class CurrencyConverter extends React.Component {
   handleChange(event) {
     const { name, value } = event.target;
     
-    
     this.setState({
       [name]: value
     }); 
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    const { rate, amount, convert } = this.state;
+    if (event) {
+      event.preventDefault();
+    }
+    const { base, rate, amount } = this.state;
     //base = base.trim();
-    console.log(`base: ${rate}\namount: ${amount}`);
+    console.log(`base: ${base}\namount: ${amount}`);
     
     const host = 'api.frankfurter.app';
-    fetch(`https://${host}/latest?from=${rate}`)
+    fetch(`https://${host}/latest?from=${base}`)
     .then(checkStatus)
     .then(json)
     .then((data) => {
       console.log('json data', data);
       this.setState({
-        conversions: Object.keys(data).map(symbol => ({symbol, rate: data[symbol]}))
+        conversions: Object.keys(data.rates).map(symbol => ({symbol, rate: data.rates[symbol]}))
       })
     }).catch((error) => {
       console.log(error);
@@ -94,7 +92,7 @@ class CurrencyConverter extends React.Component {
           <div className="col-6 mb-3 my-3 text-center">
             <span>Base Currency: </span>
             <div className="text-center mx-auto my-2"style={{width: '50%'}}>
-            <select name="rate" value={rate} onChange={this.handleChange} className="form-control select-menu text-center">
+            <select name="rate" value={base} onChange={this.handleChange} className="form-control select-menu text-center">
                 {this.state.currenciesList.map(currency => (
                   <option key={currency.symbol} value={currency.symbol}>
                   {currency.symbol} - {currency.name}
@@ -118,7 +116,7 @@ class CurrencyConverter extends React.Component {
               </thead>
               <tbody>
                 {conversions.map((currency) => (
-                  <tr>
+                  <tr key={currency.symbol}>
                     <td>{currency.symbol}</td>
                     <td>{currency.rate}</td>
                   </tr>
