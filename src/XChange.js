@@ -110,7 +110,7 @@ class CurrencyConverter extends React.Component {
           <div className="row text-center my-3 mx-auto">
             <span>Base Currency:</span>
           </div>
-          <form onSubmit={this.handleSubmit}>
+          <form onChange={this.handleSubmit}>
             <div className="text-center mx-auto"style={{width: '50%'}}>
               <select name="base" value={base} onChange={this.handleBaseChange} className="form-control select-menu text-center">
                 {this.state.currencies.map(currency => (
@@ -127,7 +127,7 @@ class CurrencyConverter extends React.Component {
               </label>
               
             </div>
-            <button type="submit" className="btn btn-primary btn-lg" id="button">Convert</button>
+            
           </form>
         </div>
         <div className="col-3 my-auto text-center mx-auto">
@@ -140,13 +140,15 @@ class CurrencyConverter extends React.Component {
             <span>Convert to: </span>
           </div>
           <div className="text-center mx-auto" style={{width: '50%'}}>
-          <select name="convert" value={convert} onChange={this.handleConvertChange} className="form-control select-menu text-center">
-              {this.state.currencies.map(currency => (
-                <option key={currency.symbol} value={currency.symbol}>
-                {currency.symbol} - {currency.name}
-              </option>
-              ))}
-            </select>
+            <form onChange={this.handleSubmit}>
+              <select name="convert" value={convert} onChange={this.handleConvertChange} className="form-control select-menu text-center">
+                {this.state.currencies.map(currency => (
+                  <option key={currency.symbol} value={currency.symbol}>
+                  {currency.symbol} - {currency.name}
+                </option>
+                ))}
+              </select>
+            </form>
           </div>
           <div className="my-3 mx-auto text-center">
             <span>Total: </span>
