@@ -127,11 +127,13 @@ class CurrencyConverter extends React.Component {
               </label>
               
             </div>
-            <button type="submit" className="btn btn-primary btn-lg">Convert</button>
+            <button type="submit" className="btn btn-primary btn-lg" id="button">Convert</button>
           </form>
         </div>
         <div className="col-3 my-auto text-center mx-auto">
-          <img src={arrow} />
+          <div className="container-fluid">
+            <img src={arrow} />
+          </div>
         </div>
         <div className="col-4 my-3 mx-auto text-center" id="coin2">
           <div className="row text-center my-3 mx-auto">

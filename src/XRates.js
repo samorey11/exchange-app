@@ -81,7 +81,7 @@ class CurrencyConverter extends React.Component {
                   <input type="number" name="amount" value={amount} onChange={this.handleChange} className="form-control my-3" />
                 </label>
               </div> 
-              <button type="submit" className="btn btn-primary">Convert</button>
+              <button type="submit" className="btn btn-primary" id="button">Convert</button>
             </form>
             
           </div>

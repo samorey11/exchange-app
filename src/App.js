@@ -17,21 +17,32 @@ const App = () => {
 
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link className="navbar-brand" to="/">X-Change</Link>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
+      <nav className="navbar navbar-expand-md navbar-light">
+        <Link className="navbar-brand ms-5" to="/">X-Change</Link>
+        <div className="navbar-collapse collapse show" id="navbarSupportedContent">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item active">
               <Link className="nav-link" to="/XRates/">X-Rates</Link>
             </li>
           </ul>
         </div>
       </nav>
+      
+      <hr className="mt-4 mt-xl-3" id="divider" />
+
       <Switch>
         <Route path="/" exact component={XChange} />
         <Route path="/XRates" component={XRates} />
         <Route component={NotFound} />
       </Switch>
+
+      <hr className="mt-4 mt-xl-3" id="divider" />
+
+      <footer className="container-fluid ms-5">
+        <div className="row pt-5 d-none d-md-flex footerNav">
+          <h5 className="mb-3" id="footer"> Find me at: </h5><a className="portfolio" href="https://wondrous-malabi-f22571.netlify.app/"> Sam Morey</a>
+        </div>
+      </footer>
     </Router>
   )
 }
