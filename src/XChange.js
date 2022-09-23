@@ -47,9 +47,10 @@ class CurrencyConverter extends React.Component {
 
   handleBaseChange(event) {
     const base = event.target.value;
-    this.setState({ base }); 
-    this.convertRate(base, this.state.convert);
-    this.getHistoricalRates(base, this.state.convert);
+    this.setState({ base }, () => {
+      this.convertRate();
+      this.getHistoricalRates();
+    })
   }
 
   handleAmountChange(event) {
@@ -58,9 +59,11 @@ class CurrencyConverter extends React.Component {
 
   handleConvertChange(event) {
     const convert = event.target.value;
-    this.setState({ convert });
-    this.convertRate(convert, this.state.base);
-    this.getHistoricalRates(convert, this.state.base);
+    this.setState({ convert }, () => {
+      this.convertRate();
+      this.getHistoricalRates();
+    });
+    
   }
 
 
